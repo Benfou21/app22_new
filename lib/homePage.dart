@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:train22/utils/functions.dart';
 import 'repositeries.dart/repository.dart';
 
 import 'model/B3_selection.dart';
@@ -54,6 +55,7 @@ class HomePage extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: list
+                    .sublist(0, 3)
                     .map(
                       (b3) => ProviderScope(
                           overrides: [currentB3.overrideWithValue(b3)],
@@ -62,7 +64,90 @@ class HomePage extends StatelessWidget {
                     .toList(),
               ),
             ),
-            Expanded(flex: 3, child: ListView(children: []))
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20.0),
+                          ),
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1,
+                          )),
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Daily"),
+                          ),
+                          Column(
+                            children: list
+                                .sublist(3, 7)
+                                .map(
+                                  (b3) => ProviderScope(overrides: [
+                                    currentB3.overrideWithValue(b3)
+                                  ], child: CustomSlider()),
+                                )
+                                .toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    addVerticalSpace(20),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20.0),
+                          ),
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1,
+                          )),
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("Activité"),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: list
+                                    .sublist(7, 9)
+                                    .map(
+                                      (b3) => ProviderScope(overrides: [
+                                        currentB3.overrideWithValue(b3)
+                                      ], child: CustomCheckBox()),
+                                    )
+                                    .toList(),
+                              ),
+                              Column(
+                                children: list
+                                    .sublist(9, 11)
+                                    .map(
+                                      (b3) => ProviderScope(overrides: [
+                                        currentB3.overrideWithValue(b3)
+                                      ], child: CustomCheckBox()),
+                                    )
+                                    .toList(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         );
       }),

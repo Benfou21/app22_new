@@ -12,19 +12,19 @@ showPickerIcons(BuildContext context, GlobalKey<ScaffoldState> scaffoldKey,
     WidgetRef ref, B3_selection b3) {
   Picker(
       adapter: PickerDataAdapter(data: [
-        PickerItem(text: const Icon(Icons.face), value: 1, children: [
+        PickerItem(text: const Icon(Icons.face), value: 0, children: [
           PickerItem(
             text: const Text("Faible"),
             value: 1,
           ),
         ]),
-        PickerItem(text: const Icon(Icons.face), value: 2, children: [
+        PickerItem(text: const Icon(Icons.face), value: 1, children: [
           PickerItem(
             text: const Text("Moyen"),
             value: 2,
           ),
         ]),
-        PickerItem(text: const Icon(Icons.face), value: 3, children: [
+        PickerItem(text: const Icon(Icons.face), value: 2, children: [
           PickerItem(
             text: const Text("Fort"),
             value: 3,
@@ -36,6 +36,7 @@ showPickerIcons(BuildContext context, GlobalKey<ScaffoldState> scaffoldKey,
         final pickedValue = picker.getSelectedValues()[0];
 
         ref.read(B3SelectionProvider.notifier).change(pickedValue, b3);
+        b3.value = pickedValue;
       }).show(scaffoldKey.currentState!);
 }
 

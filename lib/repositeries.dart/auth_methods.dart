@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:intl/intl.dart';
 import 'package:train22/model/B3_selection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -12,6 +12,32 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Signing Up User
+
+  Future<String> saveData2({required List<B3_selection> list}) async {
+    User? user = _auth.currentUser;
+
+    List<String> selectionsNames =
+        list.map((selec) => selec.name).toList(growable: false);
+    List<String> selectionsValues =
+        list.map((selec) => selec.value.toString()).toList(growable: false);
+
+    if (user != null) {
+      final now = DateTime.now();
+      final DateFormat formatter = DateFormat('yyyy-MM-dd');
+      final String formatted = formatter.format(now);
+
+      await _firestore
+          .collection("users")
+          .doc(user.uid)
+          .collection("data")
+          .doc("{$formatted}")
+          .set({"list": selectionsValues});
+
+      return "success";
+    } else {
+      return " error";
+    }
+  }
 
   Future<String> saveData({required List<B3_selection> list}) async {
     User? user = _auth.currentUser;
@@ -22,12 +48,18 @@ class AuthMethods {
         list.map((selec) => selec.value.toString()).toList(growable: false);
 
     if (user != null) {
-      await _firestore
-          .collection("users")
-          .doc(user.uid)
-          .collection("data")
-          .doc("date")
-          .update({"date": selectionsValues});
+      final now = DateTime.now();
+      final DateFormat formatter = DateFormat('yyyy-MM-dd');
+      final String formatted = formatter.format(now);
+
+      for (B3_selection i in list) {
+        await _firestore
+            .collection("users")
+            .doc(user.uid)
+            .collection("data")
+            .doc("{$formatted}")
+            .update({i.name: i.value});
+      }
 
       return "success";
     } else {

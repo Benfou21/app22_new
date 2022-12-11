@@ -105,6 +105,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     if (res == "success") {
                       Navigator.popAndPushNamed(context, '/home_page');
                     } else {
+                      print(res);
                       MessageDialog message = MessageDialog(
                         message: "Veuillez remplir tous les champs",
                         title: "Champs non remplis",
